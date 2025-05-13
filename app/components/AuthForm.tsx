@@ -20,13 +20,19 @@ import { Input } from "@/components/ui/input";
 import CustomFormUi from "./CustomFormUi";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import SignUp from "../(auth)/sign-up/page";
+import SignIn from "../(auth)/sign-in/page";
+import { useRouter } from "next/navigation";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 
 export default function AuthForm({ type }: { type: string }) {
+  const router = useRouter();
+  const authForm = authFormSchema(type);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   // 1. Define your form.
-  const form = useForm<z.infer<typeof authFormSchema>>({
-    resolver: zodResolver(authFormSchema),
+  const form = useForm<z.infer<typeof authForm>>({
+    resolver: zodResolver(authForm),
     defaultValues: {
       email: "",
       password: "",
@@ -34,13 +40,29 @@ export default function AuthForm({ type }: { type: string }) {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof authFormSchema>) {
+  async function onSubmit(values: z.infer<typeof authForm>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-
     setIsLoading(true);
-    console.log(values);
-    setIsLoading(false);
+    try {
+      // signup with appwrite and create plaid token
+      if (type === "sign-up") {
+        const newUser = await signUp(values);
+        setUser(newUser);
+      }
+
+      if (type === "sign-in") {
+        const response = await signIn({
+          email: values.email,
+          password: values.password,
+        });
+        if (response) router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -75,6 +97,76 @@ export default function AuthForm({ type }: { type: string }) {
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              {type === "sign-up" && (
+                <>
+                  <div className="flex gap-4">
+                    <CustomFormUi
+                      control={form.control}
+                      placeholder={"Enter your First name"}
+                      type={"text"}
+                      name={"firstName"}
+                      label={"Firstname"}
+                    />
+
+                    <CustomFormUi
+                      control={form.control}
+                      placeholder={"Enter your Last name"}
+                      type={"text"}
+                      name={"lastName"}
+                      label={"Lastname"}
+                    />
+                  </div>
+                  <CustomFormUi
+                    control={form.control}
+                    placeholder={"Enter your Address"}
+                    type={"text"}
+                    name={"address1"}
+                    label={"Address"}
+                  />
+
+                  <CustomFormUi
+                    control={form.control}
+                    placeholder={"Enter your City"}
+                    type={"text"}
+                    name={"city"}
+                    label={"City"}
+                  />
+                  <div className="flex gap-4">
+                    <CustomFormUi
+                      control={form.control}
+                      placeholder={"Enter your State"}
+                      type={"text"}
+                      name={"state"}
+                      label={"state"}
+                    />
+
+                    <CustomFormUi
+                      control={form.control}
+                      placeholder={"Postal Code"}
+                      type={"text"}
+                      name={"postalCode"}
+                      label={"PostalCode"}
+                    />
+                  </div>
+                  <div className="flex gap-4">
+                    <CustomFormUi
+                      control={form.control}
+                      placeholder={"yyyy-mm-dd"}
+                      type={"text"}
+                      name={"dateOfBirth"}
+                      label={"Date of birth"}
+                    />
+
+                    <CustomFormUi
+                      control={form.control}
+                      placeholder={"SSN"}
+                      type={"number"}
+                      name={"ssn"}
+                      label={"SSN"}
+                    />
+                  </div>
+                </>
+              )}
               <CustomFormUi
                 control={form.control}
                 placeholder={"Enter your Email"}
@@ -90,33 +182,37 @@ export default function AuthForm({ type }: { type: string }) {
                 name={"password"}
                 label={"Password"}
               />
-
-              <Button
-                type="submit"
-                className="bg-blue-500"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 size={20} className="animate-spin" /> &nbsp;
-                    Loading...
-                  </>
-                ) : type === "sign-in" ? (
-                  "Sign In "
-                ) : (
-                  "Sign Up"
-                )}
-              </Button>
+              <div className="flex flex-col gap-4">
+                <Button
+                  type="submit"
+                  className="bg-blue-500 cursor-pointer"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin" /> &nbsp;
+                      Loading...
+                    </>
+                  ) : type === "sign-in" ? (
+                    "Sign In "
+                  ) : (
+                    "Sign Up"
+                  )}
+                </Button>
+              </div>
             </form>
           </Form>
 
           <footer className="flex justify-center gap-1">
-            <p>
+            <p className="text-14 font-normal text-gray-600">
               {type === "sign-in"
                 ? "Don't have an account?"
-                : "Already have an account"}
+                : "Already have an account?"}
             </p>
-            <Link href={type === "sign-in" ? "/sign-up" : "/sign-in"}>
+            <Link
+              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              className="text-14 cursor-pointer font-medium text-blue-600"
+            >
               {type === "sign-in" ? "Sign Up" : "Sign In"}
             </Link>
           </footer>

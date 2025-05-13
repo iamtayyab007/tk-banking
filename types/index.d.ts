@@ -8,6 +8,7 @@ declare type SearchParamProps = {
 // ========================================
 
 declare type SignUpParams = {
+  get(arg0: string): unknown;
   firstName: string;
   lastName: string;
   address1: string;
