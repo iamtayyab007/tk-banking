@@ -52,11 +52,11 @@ export default function AuthForm({ type }: { type: string }) {
       }
 
       if (type === "sign-in") {
-        const response = await signIn({
-          email: values.email,
-          password: values.password,
-        });
-        if (response) router.push("/");
+        // const response = await signIn({
+        //   email: values.email,
+        //   password: values.password,
+        // });
+        // if (response) router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -137,7 +137,7 @@ export default function AuthForm({ type }: { type: string }) {
                       placeholder={"Enter your State"}
                       type={"text"}
                       name={"state"}
-                      label={"state"}
+                      label={"State"}
                     />
 
                     <CustomFormUi
