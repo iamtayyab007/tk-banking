@@ -1,14 +1,19 @@
 "use server";
 
 import { ID } from "node-appwrite";
-import { createAdminClient, createSessionClient } from "../server/appwrite";
+import {
+  createAdminClient,
+  createSessionClient,
+} from "../../lib/server/appwrite";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { parseStringify } from "../utils";
+import { parseStringify } from "../../lib/utils";
 
-export const signIn = async () => {
+export const signIn = async ({ email, password }: signInProps) => {
   try {
-    // Mutation/Database/make fetch
+    const { account } = await createAdminClient();
+    const response = await account.createEmailPasswordSession(email, password);
+    return parseStringify(response);
   } catch (error) {
     console.log("Error", error);
   }
@@ -48,6 +53,21 @@ export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
     return await account.get();
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function logout() {
+  "use server";
+
+  try {
+    const { account } = await createSessionClient();
+
+    (await cookies()).delete("appwrite-session");
+    await account.deleteSession("current");
+
+    redirect("/sign-up");
   } catch (error) {
     return null;
   }

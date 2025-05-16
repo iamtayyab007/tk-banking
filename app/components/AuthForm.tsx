@@ -20,8 +20,6 @@ import { Input } from "@/components/ui/input";
 import CustomFormUi from "./CustomFormUi";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import SignUp from "../(auth)/sign-up/page";
-import SignIn from "../(auth)/sign-in/page";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
 
@@ -30,6 +28,7 @@ export default function AuthForm({ type }: { type: string }) {
   const authForm = authFormSchema(type);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof authForm>>({
     resolver: zodResolver(authForm),
@@ -52,11 +51,11 @@ export default function AuthForm({ type }: { type: string }) {
       }
 
       if (type === "sign-in") {
-        // const response = await signIn({
-        //   email: values.email,
-        //   password: values.password,
-        // });
-        // if (response) router.push("/");
+        const response = await signIn({
+          email: values.email,
+          password: values.password,
+        });
+        if (response) router.push("/");
       }
     } catch (error) {
       console.log(error);
