@@ -16,7 +16,7 @@ export default function BankCard({
       >
         <div className="relative z-10 flex size-full max-w-[228px] flex-col justify-between rounded-l-[20px] bg-blue-500 bg-bank-gradient px-5 pb-4 pt-5">
           <div>
-            <h1 className="text-16 font-semibold text-white">
+            <h1 className="text-xl font-semibold text-white">
               {account.name || userName}
             </h1>
             <p className="font-black text-white">
@@ -25,7 +25,7 @@ export default function BankCard({
           </div>
           <article className="flex flex-col gap-2">
             <div className="flex justify-between">
-              <h1 className="text-12 font-semibold text-white">{userName}</h1>
+              <h1 className="text-sm font-semibold text-white">{userName}</h1>
               <h2 className="text-12 font-semibold text-white">** / **</h2>
             </div>
             <p className="text-14 font-semibold tracking-[1.1px] text-white">
