@@ -33,7 +33,7 @@ export const createFundingSource = async (
         name: options.fundingSourceName,
         plaidToken: options.plaidToken,
       })
-      .then((res: any) => res.headers.get("location"));
+      .then((res) => res.headers.get("location"));
   } catch (err) {
     console.error("Creating a Funding Source Failed: ", err);
   }
@@ -85,7 +85,7 @@ export const createTransfer = async ({
     };
     return await dwollaClient
       .post("transfers", requestBody)
-      .then((res: any) => res.headers.get("location"));
+      .then((res) => res.headers.get("location"));
   } catch (err) {
     console.error("Transfer fund failed: ", err);
   }
