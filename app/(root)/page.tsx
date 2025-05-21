@@ -3,9 +3,18 @@ import HeaderBox from "../components/HeaderBox";
 import TotalBalanceBox from "../components/TotalBalanceBox";
 import RightSidebar from "../components/RightSidebar";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 
-export default async function Home() {
+export default async function Home({
+  searchParams: { id, page },
+}: SearchParamProps) {
   const loggedIn = await getLoggedInUser();
+  const accounts = await getAccounts({ userId: loggedIn.$id });
+
+  if (!accounts) return;
+  const accountData = accounts?.Data;
+  const appwriteItemId = (id as string) || accountData[0]?.appwriteItemId;
+  const account = await getAccount({ appwriteItemId });
 
   return (
     <section className="no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll">
@@ -18,17 +27,17 @@ export default async function Home() {
             subtext="Access and manage your account and transactions efficiently"
           />
           <TotalBalanceBox
-            accounts={[]}
-            totalBanks={1}
-            totalCurrentBalance={1234.5}
+            accounts={accountData}
+            totalBanks={accounts?.totalBanks}
+            totalCurrentBalance={accounts?.totalCurrentBalance}
           />
         </header>
         Recent transactions
       </div>
       <RightSidebar
         user={loggedIn}
-        transactions={[]}
-        banks={[{ currentBalance: 123.5 }, { currentBalance: 500 }]}
+        transactions={account.transactions}
+        banks={accountData?.slice(0, 2)}
       />
     </section>
   );
