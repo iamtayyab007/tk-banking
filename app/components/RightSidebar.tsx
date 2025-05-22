@@ -15,12 +15,12 @@ export default function RightSidebar({
         <div className="relative flex px-6 max-xl:justify-center">
           <div className="absolute -top-8 size-24 rounded-full bg-gray-100 border-8 border-white p-2 shadow-profile flex items-center justify-center">
             <span className="text-5xl font-bold text-blue-500">
-              {user?.name[0]}
+              {user?.firstName[0]}
             </span>
           </div>
           <div className="flex flex-col pt-24">
             <h1 className="text-24 font-semibold text-gray-900">
-              {user?.name}
+              {user?.firstName} {user?.lastName}
             </h1>
             <p className="text-16 font-normal text-gray-600">{user?.email}</p>
           </div>
@@ -40,7 +40,7 @@ export default function RightSidebar({
               <BankCard
                 key={banks[0].$id}
                 account={banks[0]}
-                userName={`${user?.name}`}
+                userName={`${user?.firstName} ${user?.lastName}`}
                 showBalance={false}
               />
             </div>

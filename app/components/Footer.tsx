@@ -21,7 +21,7 @@ function Footer({ user, type = "desktop" }: FooterProps) {
             : "flex size-10 items-center justify-center rounded-full bg-gray-200"
         }
       >
-        <p>{user.name[0]}</p>
+        <p>{user.firstName}</p>
       </div>
       <div
         className={
@@ -31,7 +31,7 @@ function Footer({ user, type = "desktop" }: FooterProps) {
         }
       >
         <h1 className="text-xl truncate  text-gray-700 font-semibold">
-          {user.name}
+          {user.firstName}
         </h1>
         <p className="text-sm truncate font-normal text-gray-600">
           {user.email}
