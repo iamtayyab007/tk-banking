@@ -17,11 +17,11 @@ function Footer({ user, type = "desktop" }: FooterProps) {
       <div
         className={
           type === "mobile"
-            ? "flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden"
-            : "flex size-10 items-center justify-center rounded-full bg-gray-200"
+            ? "flex size-10 items-center justify-center rounded-full bg-gray-200 text-black max-xl:hidden"
+            : "flex size-9 items-center justify-center rounded-full bg-gray-200 text-black"
         }
       >
-        <p>{user.firstName}</p>
+        <p>{user.firstName[0]}</p>
       </div>
       <div
         className={
@@ -38,7 +38,7 @@ function Footer({ user, type = "desktop" }: FooterProps) {
         </p>
       </div>
       <div
-        className="relative size-5 max-xl:w-full max-xl:flex max-xl:justify-center max-xl:items-center"
+        className="relative w-6 h-6 max-xl:w-4 max-xl:h-4 max-xl:flex max-xl:justify-center max-xl:items-center"
         onClick={handleLogout}
       >
         <Image src="icons/logout.svg" fill alt="tk_banking" />

@@ -11,11 +11,14 @@ export default async function Home({
 }: SearchParamProps) {
   const currentPage = Number((page as string) || 1);
   const loggedIn = await getLoggedInUser();
+
   const accounts = await getAccounts({ userId: loggedIn.$id });
 
   if (!accounts) return;
   const accountData = accounts?.data;
+
   const appwriteItemId = (id as string) || accountData[0]?.appwriteItemId;
+
   const account = await getAccount({ appwriteItemId });
 
   return (
