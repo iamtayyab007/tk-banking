@@ -2,17 +2,17 @@ import { formatAmount } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+import Copy from "./Copy";
 export default function BankCard({
   account,
   userName,
-  showBalance,
+  showBalance = true,
 }: CreditCardProps) {
   return (
     <div className="flex flex-col">
       <Link
-        href="/"
-        className="relative flex h-[190px] w-full max-w-[320px] justify-between rounded-[20px] border border-white bg-bank-gradient shadow-creditCard backdrop-blur-[6px]"
+        href={`/transaction-history/?id=${account.appwriteItemId}`}
+        className="relative flex h-[190px] w-full justify-between rounded-[20px] border border-white bg-bank-gradient shadow-creditCard backdrop-blur-[6px] min-w-[325px]"
       >
         <div className="relative z-10 flex size-full max-w-[228px] flex-col justify-between rounded-l-[20px] bg-blue-500 bg-bank-gradient px-5 pb-4 pt-5">
           <div>
@@ -29,7 +29,7 @@ export default function BankCard({
               <h2 className="text-12 font-semibold text-white">** / **</h2>
             </div>
             <p className="text-14 font-semibold tracking-[1.1px] text-white">
-              **** **** **** <span className="text-16">1234</span>
+              **** **** **** <span className="text-16">{account?.mask}</span>
             </p>
           </article>
         </div>
@@ -52,6 +52,7 @@ export default function BankCard({
           className="absolute top-0 left-0"
         />
       </Link>
+      {showBalance && <Copy title={account?.sharaebleId} />}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BankTabItem } from "./BankTabItem";
 import BankInfo from "./BankInfo";
 import TransactionsTable from "./TransactionsTable";
+import { Pagination } from "./Pagination";
 
 function RecentTransactions({
   accounts,
@@ -49,6 +50,7 @@ function RecentTransactions({
               type="full"
             />
             <TransactionsTable transactions={transactions} />
+            <Pagination />
           </TabsContent>
         ))}
       </Tabs>

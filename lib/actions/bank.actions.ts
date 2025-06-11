@@ -101,7 +101,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     const transactions = await getTransactions({
       accessToken: bank?.accessToken,
     });
-
+    console.log("trasnaction", transactions);
     const account = {
       id: accountData.account_id,
       availableBalance: accountData.balances.available!,

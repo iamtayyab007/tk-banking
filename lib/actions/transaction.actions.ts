@@ -59,7 +59,7 @@ export const getTransactionsByBankId = async ({
     };
 
     return parseStringify(transactions);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error?.response.data || error);
   }
 };
