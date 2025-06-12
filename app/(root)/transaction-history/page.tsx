@@ -1,4 +1,5 @@
 import HeaderBox from "@/app/components/HeaderBox";
+import { Pagination } from "@/app/components/Pagination";
 import TransactionsTable from "@/app/components/TransactionsTable";
 import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
@@ -19,6 +20,15 @@ export default async function TransactionHistory({
   const appwriteItemId = (id as string) || accountData[0]?.appwriteItemId;
 
   const account = await getAccount({ appwriteItemId });
+
+  const rowsPerPage = 10;
+  const totalPages = Math.ceil(account?.transactions.length / rowsPerPage);
+  const indexOfLastTransaction = currentPage * rowsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
+  const currentTransactions = account?.transactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
 
   return (
     <div className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12">
@@ -49,7 +59,13 @@ export default async function TransactionHistory({
           </div>
         </div>
         <section className="flex w-full flex-col gap-6">
-          <TransactionsTable transactions={account?.transactions} />
+          <TransactionsTable transactions={currentTransactions} />
+          {totalPages > 1 && (
+            <div className="my-4 w-full">
+              {" "}
+              <Pagination totalPages={totalPages} page={currentPage} />
+            </div>
+          )}
         </section>
       </div>
     </div>
